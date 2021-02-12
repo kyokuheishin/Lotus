@@ -9,9 +9,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func main() {
+func initEcho() *echo.Echo {
 	e := echo.New()
-
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -19,9 +18,22 @@ func main() {
 	// Routes
 	e.GET("/", hello)
 	e.POST("/login", login)
+	e.Group("/room", middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningKey: []byte("kokorowotokihanate"),
+	}))
+	e.POST("/room/new", newRoom, middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningKey: []byte("kokorowotokihanate"),
+	}))
+	// Start server
 
+	return e
+}
+
+func main() {
+	e := initEcho()
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
+
 }
 
 func hello(c echo.Context) error {
@@ -56,4 +68,8 @@ func login(c echo.Context) (err error) {
 		"token": t,
 	})
 
+}
+
+func newRoom(c echo.Context) error {
+	return c.String(http.StatusCreated, "Created")
 }

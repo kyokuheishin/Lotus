@@ -72,3 +72,41 @@ func TestLogin(t *testing.T) {
 	})
 
 }
+
+func TestNewRoom(t *testing.T) {
+	e := initEcho()
+
+	t.Run("Test create room with JWT", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/room/new", strings.NewReader(""))
+		req.Header.Set(echo.HeaderAuthorization, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTMzOTU5ODYsIm5hbWUiOiJreW9rdSJ9.sUxRgnXqK1dgc-34IWjvHycGoTuU2IGF2vzdml2s8wg")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		e.ServeHTTP(rec, req)
+		if assert.NoError(t, newRoom(c)) {
+			assert.Equal(t, http.StatusCreated, rec.Code)
+		}
+
+	})
+
+	t.Run("Test create room without JWT", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/room/new", strings.NewReader(""))
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		e.ServeHTTP(rec, req)
+		if assert.NoError(t, newRoom(c)) {
+			assert.Equal(t, http.StatusBadRequest, rec.Code)
+		}
+	})
+
+	t.Run("Test create room with invalid JWT", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/room/new", strings.NewReader(""))
+		req.Header.Set(echo.HeaderAuthorization, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTMzOTU5ODYsIm5hbWUiOeW9rdSJ9.sUxRgnXqK1dgc-34IWjvHycGoTuU2IGF2vzdml2s8wg")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		e.ServeHTTP(rec, req)
+		if assert.NoError(t, newRoom(c)) {
+			assert.Equal(t, http.StatusUnauthorized, rec.Code)
+		}
+
+	})
+}
