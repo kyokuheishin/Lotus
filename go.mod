@@ -16,6 +16,7 @@ require (
 	github.com/golang/mock v1.4.4 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/gorilla/schema v1.2.0 // indirect
+	github.com/gorilla/websocket v1.4.2
 	github.com/imkira/go-interpol v1.1.0 // indirect
 	github.com/iris-contrib/blackfriday v2.0.0+incompatible // indirect
 	github.com/iris-contrib/formBinder v5.0.0+incompatible // indirect
@@ -26,7 +27,7 @@ require (
 	github.com/kataras/golog v0.1.6 // indirect
 	github.com/kataras/iris v11.1.1+incompatible // indirect
 	github.com/klauspost/compress v1.11.7 // indirect
-	github.com/labstack/echo v3.3.10+incompatible
+	github.com/labstack/echo v3.3.10+incompatible // indirect
 	github.com/labstack/echo/v4 v4.1.17
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.4 // indirect
