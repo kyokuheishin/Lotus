@@ -12,6 +12,7 @@ import (
 
 var (
 	mockDB = map[string]string{}
+	jwtkey = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTM5MTcyNDMsIm5hbWUiOiJreW9rdSJ9.4HPNWrwG1AJSX1l1VerzpfNrCmia0Ly_um3y5KjVzUA"
 )
 
 func TestRoomPermission(t *testing.T) {
@@ -78,7 +79,7 @@ func TestNewRoom(t *testing.T) {
 
 	t.Run("Test create room with JWT", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/room/new", strings.NewReader(""))
-		req.Header.Set(echo.HeaderAuthorization, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTMzOTU5ODYsIm5hbWUiOiJreW9rdSJ9.sUxRgnXqK1dgc-34IWjvHycGoTuU2IGF2vzdml2s8wg")
+		req.Header.Set(echo.HeaderAuthorization, jwtkey)
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		e.ServeHTTP(rec, req)
@@ -108,5 +109,53 @@ func TestNewRoom(t *testing.T) {
 			assert.Equal(t, http.StatusUnauthorized, rec.Code)
 		}
 
+	})
+}
+
+func TestEnterRoom(t *testing.T) {
+	e := initEcho()
+
+	t.Run("Test enter room that exists", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/room/1", nil)
+		req.Header.Set(echo.HeaderAuthorization, jwtkey)
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		e.ServeHTTP(rec, req)
+		if assert.NoError(t, enterRoom(c)) {
+			assert.Equal(t, http.StatusOK, rec.Code)
+		}
+	})
+
+	t.Run("Test enter room that exists without jwt", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/room/1", nil)
+
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		e.ServeHTTP(rec, req)
+		if assert.NoError(t, enterRoom(c)) {
+			assert.Equal(t, http.StatusBadRequest, rec.Code)
+		}
+	})
+
+	t.Run("Test enter room that exists with invalid jwt", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/room/1", nil)
+		req.Header.Set(echo.HeaderAuthorization, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTMzOTU5ODYsIm5hbWUiOeW9rdSJ9.sUxRgnXqK1dgc-34IWjvHycGoTuU2IGF2vzdml2s8wg")
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		e.ServeHTTP(rec, req)
+		if assert.NoError(t, enterRoom(c)) {
+			assert.Equal(t, http.StatusUnauthorized, rec.Code)
+		}
+	})
+
+	t.Run("Test enter room that not exists", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/room/2", nil)
+		req.Header.Set(echo.HeaderAuthorization, jwtkey)
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		e.ServeHTTP(rec, req)
+		if assert.NoError(t, enterRoom(c)) {
+			assert.Equal(t, http.StatusNotFound, rec.Code)
+		}
 	})
 }

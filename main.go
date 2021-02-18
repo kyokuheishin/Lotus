@@ -24,6 +24,9 @@ func initEcho() *echo.Echo {
 	e.POST("/room/new", newRoom, middleware.JWTWithConfig(middleware.JWTConfig{
 		SigningKey: []byte("kokorowotokihanate"),
 	}))
+	e.GET("/room/:id", enterRoom, middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningKey: []byte("kokorowotokihanate"),
+	}))
 	// Start server
 
 	return e
@@ -72,4 +75,16 @@ func login(c echo.Context) (err error) {
 
 func newRoom(c echo.Context) error {
 	return c.String(http.StatusCreated, "Created")
+}
+
+func enterRoom(c echo.Context) error {
+	roomID := c.Param("id")
+	if roomID == "1" {
+		return c.String(http.StatusOK, "OK")
+
+	}
+	// if _, ok := h.rooms[roomID]; ok {
+	// 	return c.String(http.StatusOK, "OK")
+	// }
+	return c.String(http.StatusNotFound, "404")
 }
