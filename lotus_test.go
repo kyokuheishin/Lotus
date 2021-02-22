@@ -83,7 +83,7 @@ func TestNewRoom(t *testing.T) {
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		e.ServeHTTP(rec, req)
-		if assert.NoError(t, newRoom(c)) {
+		if assert.NoError(t, newRoomPost(c)) {
 			assert.Equal(t, http.StatusCreated, rec.Code)
 		}
 
@@ -94,7 +94,7 @@ func TestNewRoom(t *testing.T) {
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		e.ServeHTTP(rec, req)
-		if assert.NoError(t, newRoom(c)) {
+		if assert.NoError(t, newRoomPost(c)) {
 			assert.Equal(t, http.StatusBadRequest, rec.Code)
 		}
 	})
@@ -105,7 +105,7 @@ func TestNewRoom(t *testing.T) {
 		rec := httptest.NewRecorder()
 		c := e.NewContext(req, rec)
 		e.ServeHTTP(rec, req)
-		if assert.NoError(t, newRoom(c)) {
+		if assert.NoError(t, newRoomPost(c)) {
 			assert.Equal(t, http.StatusUnauthorized, rec.Code)
 		}
 
