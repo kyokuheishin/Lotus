@@ -1,0 +1,41 @@
+- id: 1
+  username: kyoku
+  password: $2a$10$a22ugM7wHHXSjZmj36PF2uXgqFNaExoxZeHiCbult3fOQoKaI2NlK
+  created_time: 1614758068
+  last_active_time: 1614758068
+  role: super_admin
+
+- id: 2
+  username: heishin
+  password: $2a$10$hnrDe5IUGAyzmuTXjIBJnumgB9zIPpt6Z3Hdp6hSIPnxNSH1PP3bO
+  created_time: 1614758070
+  last_active_time: 1614758070
+  role: admin
+
+- id: 3
+  username: pochama
+  password: $2a$10$Nlzxjwch3q1MkvjTweOr4eCNGMkTXhxRCvl17IlzWvuYYifd8WXey
+  created_time: 1614758168
+  last_active_time: 1614758168
+  role: player
+
+- id: 4
+  username: xion
+  password: $2a$10$NZxvuWVzy/A8s4a71LnfWO99gQsnd5Wn4U5ynHN5wnSUOEEtHmN46
+  created_time: 1614758227
+  last_active_time: 1614758227
+  role: player
+
+- id: 5
+  username: heartless
+  password: $2a$10$YO7dZGkLEeJR6btB2eSlCOVjXVyKx1XHqcx8uLM.ZK2Kzex9ZjwLC
+  created_time: 1614758250
+  last_active_time: 1614758251
+  role: player
+
+- id: 6
+  username: never
+  password: $2a$10$abdSLUxPJkvYhvx0hK03YuazLGAYXVVztmhZWv017H3P4fCoXk9D2
+  created_time: 1614758250
+  last_active_time: 1614758251
+  role: banned

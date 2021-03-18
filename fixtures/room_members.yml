@@ -1,0 +1,35 @@
+- id: 1
+  room_id: 1
+  role: creator
+  user_id: 3
+  card_id: 1
+
+- id: 2
+  room_id: 1
+  role: player
+  user_id: 4
+  card_id: 2
+
+- id: 3
+  room_id: 2
+  role: creator
+  user_id: 4
+  card_id: 3
+
+- id: 4
+  room_id: 2
+  role: player
+  user_id: 3
+  card_id: 4
+
+- id: 5
+  room_id: 2
+  role: banned
+  user_id: 6
+  card_id: 5
+
+- id: 6
+  room_id: 2
+  role: player
+  user_id: 5
+  card_id: 6

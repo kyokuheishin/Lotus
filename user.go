@@ -1,6 +1,6 @@
 package main
 
-type User struct {
+type UserLegacy struct {
 	name        string
 	permissions map[Permission]map[string]bool
 	identity    Identity

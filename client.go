@@ -1,11 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/websocket"
 )
 
@@ -52,14 +54,34 @@ func (s subscription) readPump() {
 	c.ws.SetPongHandler(func(string) error { c.ws.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 	for {
 		_, msg, err := c.ws.ReadMessage()
+		var wsm WebSocketMessage
+
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
 				log.Printf("error: %v", err)
 			}
 			break
 		}
-		m := message{msg, s.room}
-		h.broadcast <- m
+		err = json.Unmarshal(msg, &wsm)
+
+		if err != nil {
+			c.write(websocket.CloseMessage, []byte("Invalid message."))
+			break
+		}
+
+		token, err := jwt.Parse(wsm.JwtToken, func(t *jwt.Token) (interface{}, error) {
+			return []byte("kokorowotokihanate"), nil
+		})
+
+		if err == nil && token.Valid {
+			m := message{[]byte(wsm.Data.Text), s.room}
+			h.broadcast <- m
+		} else {
+			c.write(websocket.CloseMessage, []byte("Invalid JWT token."))
+		}
+
+		// m := message{msg, s.room}
+		// h.broadcast <- m
 	}
 }
 

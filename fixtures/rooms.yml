@@ -1,0 +1,21 @@
+- id: 1
+  host_id: 3
+  is_password_required: false
+  password:
+  tittle: Test Room 1
+  description: Just another test Room
+  tag: test,whatever
+  created_time: 1614758416
+  last_active_time: 1614758416
+  allow_onlooker_when_playing: true
+
+- id: 2
+  host_id: 4
+  is_password_required: true
+  password: xiv
+  tittle: Test Room with password
+  description: Just another test Room with password
+  tag: test,whatever,password
+  created_time: 1614758416
+  last_active_time: 1614758416
+  allow_onlooker_when_playing: false
